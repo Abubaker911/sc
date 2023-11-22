@@ -1,13 +1,16 @@
 import streamlit as st
-import enchant
+from spellchecker import SpellChecker
 
 # Initialize the spellchecker
-spell_checker = enchant.Dict("en_US")
+spell = SpellChecker()
 
 def spell_check(text):
     words = text.split()
-    corrected_words = [spell_checker.suggest(word)[0] if not spell_checker.check(word) else word for word in words]
-    corrected_text = ' '.join(corrected_words)
+    misspelled = spell.unknown(words)
+    
+    # Correct misspelled words
+    corrected_text = ' '.join(spell.correction(word) if word in misspelled else word for word in words)
+    
     return corrected_text
 
 def main():
