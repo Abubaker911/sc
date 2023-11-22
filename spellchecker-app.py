@@ -4,8 +4,7 @@ import streamlit as st
 valid_words = {"example", "streamlit", "python", "spell", "checker", "app"}
 
 def spell_check(text):
-    words = text.split()
-    corrected_words = [valid_word if valid_word in valid_words else f"_{word}_" for word in words]
+    corrected_words = [word if word in valid_words else f"_{word}_" for word in text.split()]
     corrected_text = ' '.join(corrected_words)
     return corrected_text
 
