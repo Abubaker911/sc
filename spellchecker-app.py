@@ -1,8 +1,9 @@
 import streamlit as st
-from spellchecker import SpellChecker
+
 
 spell = SpellChecker()
 
+from spellchecker import SpellChecker
 def spell_check(text):
     words = text.split()
     corrected_words = [spell.correction(word) for word in words]
