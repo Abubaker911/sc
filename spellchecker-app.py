@@ -1,23 +1,25 @@
 import streamlit as st
-from autocorrect import Speller
+import enchant
 
-def autocorrect_text(input_text):
-    spell = Speller()
-    corrected_text = spell(input_text)
+# Initialize the spellchecker
+spell_checker = enchant.Dict("en_US")
+
+def spell_check(text):
+    words = text.split()
+    corrected_words = [spell_checker.suggest(word)[0] if not spell_checker.check(word) else word for word in words]
+    corrected_text = ' '.join(corrected_words)
     return corrected_text
 
 def main():
-    st.title("Text Autocorrect App")
+    st.title("Spell Checker App")
+    st.write("Enter a sentence to check and correct spelling:")
+
+    user_input = st.text_area("Input your text:")
     
-    # Get user input
-    user_input = st.text_area("Enter text:")
-
-    # Perform autocorrection
-    corrected_output = autocorrect_text(user_input)
-
-    # Display corrected output
-    st.write("Autocorrected Text:")
-    st.write(corrected_output)
+    if st.button("Check and Correct"):
+        result = spell_check(user_input)
+        st.success("Corrected Text:")
+        st.write(result)
 
 if __name__ == "__main__":
     main()
