@@ -1,23 +1,35 @@
 import streamlit as st
+import nltk
+from nltk.metrics.distance import edit_distance
+from nltk.corpus import words
 
-# Sample set of valid words
-valid_words = {"example", "streamlit", "python", "spell", "checker", "app"}
+nltk.download('words')
+english_words = set(words.words())
 
-def spell_check(text):
-    corrected_words = [word if word in valid_words else f"_{word}_" for word in text.split()]
-    corrected_text = ' '.join(corrected_words)
-    return corrected_text
+def get_closest_word(word):
+    min_distance = float('inf')
+    closest_word = None
+    for w in english_words:
+        distance = edit_distance(word, w)
+        if distance < min_distance:
+            min_distance = distance
+            closest_word = w
+    return closest_word
 
-def main():
-    st.title("Basic Spell Checker App")
-    st.write("Enter a sentence to check and correct spelling:")
+def spell_checker_game():
+    st.title("Spell Checker Game")
 
-    user_input = st.text_area("Input your text:")
-    
-    if st.button("Check and Correct"):
-        result = spell_check(user_input.lower())  # Convert to lowercase for case-insensitive comparison
-        st.success("Corrected Text:")
-        st.write(result)
+    user_input = st.text_input("Enter a word (or type 'quit' to exit):").lower()
+
+    if user_input == 'quit':
+        st.success("Thank you for playing! Exiting the game.")
+        return
+
+    if user_input in english_words:
+        st.success("Correct! '{}' is a valid English word.".format(user_input))
+    else:
+        closest_word = get_closest_word(user_input)
+        st.warning("Did you mean '{}'?".format(closest_word))
 
 if __name__ == "__main__":
-    main()
+    spell_checker_game()
