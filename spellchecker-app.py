@@ -1,28 +1,31 @@
 import streamlit as st
 from spellchecker import SpellChecker
 
-# Initialize the spellchecker
-spell = SpellChecker()
-
 def spell_check(text):
+    spell = SpellChecker()
+    # Split the input text into words
     words = text.split()
-    misspelled = spell.unknown(words)
     
-    # Correct misspelled words
-    corrected_text = ' '.join(spell.correction(word) if word in misspelled else word for word in words)
+    # Find and correct misspelled words
+    corrected_text = []
+    for word in words:
+        corrected_text.append(spell.correction(word))
     
-    return corrected_text
+    # Join the corrected words back into a sentence
+    result = ' '.join(corrected_text)
+    return result
 
 def main():
-    st.title("Spell Checker App")
-    st.write("Enter a sentence to check and correct spelling:")
-
-    user_input = st.text_area("Input your text:")
+    st.title("Spellchecker App")
     
-    if st.button("Check and Correct"):
+    # Input textarea for the user to enter text
+    user_input = st.text_area("Enter text for spellchecking:", "")
+    
+    if st.button("Check Spelling"):
+        # Perform spell check when the button is clicked
         result = spell_check(user_input)
-        st.success("Corrected Text:")
-        st.write(result)
+        st.markdown(f"**Corrected Text:**\n{result}")
 
 if __name__ == "__main__":
     main()
+
