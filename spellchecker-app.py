@@ -5,7 +5,7 @@ valid_words = {"example", "streamlit", "python", "spell", "checker", "app"}
 
 def spell_check(text):
     words = text.split()
-    corrected_text = ' '.join(valid_word if valid_word in valid_words else word for word in words)
+    corrected_text = ' '.join(word if word in valid_words else word for word in words)
     return corrected_text
 
 def main():
