@@ -1,21 +1,21 @@
 import streamlit as st
-from spellchecker import SpellChecker
+
+# Sample dictionary of valid words
+valid_words = set(["example", "streamlit", "python", "spell", "checker", "app"])
 
 def spell_check(text):
-    spell = SpellChecker()
     words = text.split()
-    misspelled = spell.unknown(words)
-    corrected_text = ' '.join(spell.correction(word) if word in misspelled else word for word in words)
+    corrected_text = ' '.join(valid_word if valid_word in valid_words else word for word in words)
     return corrected_text
 
 def main():
-    st.title("Spell Checker App")
+    st.title("Basic Spell Checker App")
     st.write("Enter a sentence to check and correct spelling:")
 
     user_input = st.text_area("Input your text:")
     
     if st.button("Check and Correct"):
-        result = spell_check(user_input)
+        result = spell_check(user_input.lower())  # Convert to lowercase for case-insensitive comparison
         st.success("Corrected Text:")
         st.write(result)
 
