@@ -1,7 +1,7 @@
 import streamlit as st
 
-# Sample dictionary of valid words
-valid_words = set(["example", "streamlit", "python", "spell", "checker", "app"])
+# Sample set of valid words
+valid_words = {"example", "streamlit", "python", "spell", "checker", "app"}
 
 def spell_check(text):
     words = text.split()
